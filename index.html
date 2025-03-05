@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时间转换工具</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>时间转换工具</h1>
+        
+        <!-- 添加当前时间显示区域 -->
+        <div class="current-time-section">
+            <div class="time-display">
+                <div class="time-item">
+                    <label>当前时间</label>
+                    <div class="value-container">
+                        <div id="current-time" class="value"></div>
+                        <button class="copy-btn" onclick="copyToClipboard('current-time')">
+                            <svg class="copy-icon" viewBox="0 0 24 24" width="16" height="16">
+                                <path d="M16 1H4C3 1 2 2 2 3v14h2V3h12V1zm3 4H8C7 5 6 6 6 7v14c0 1 1 2 2 2h11c1 0 2-1 2-2V7c0-1-1-2-2-2zm0 16H8V7h11v14z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="time-item">
+                    <label>时间戳(秒)</label>
+                    <div class="value-container">
+                        <div id="current-timestamp-seconds" class="value"></div>
+                        <button class="copy-btn" onclick="copyToClipboard('current-timestamp-seconds')">
+                            <svg class="copy-icon" viewBox="0 0 24 24" width="16" height="16">
+                                <path d="M16 1H4C3 1 2 2 2 3v14h2V3h12V1zm3 4H8C7 5 6 6 6 7v14c0 1 1 2 2 2h11c1 0 2-1 2-2V7c0-1-1-2-2-2zm0 16H8V7h11v14z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="time-item">
+                    <label>时间戳(毫秒)</label>
+                    <div class="value-container">
+                        <div id="current-timestamp-milliseconds" class="value"></div>
+                        <button class="copy-btn" onclick="copyToClipboard('current-timestamp-milliseconds')">
+                            <svg class="copy-icon" viewBox="0 0 24 24" width="16" height="16">
+                                <path d="M16 1H4C3 1 2 2 2 3v14h2V3h12V1zm3 4H8C7 5 6 6 6 7v14c0 1 1 2 2 2h11c1 0 2-1 2-2V7c0-1-1-2-2-2zm0 16H8V7h11v14z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="converter-section">
+            <h2>时间戳转换</h2>
+            <div class="conversion-toggle">
+                <button class="toggle-btn active" data-mode="timestamp-to-date">时间戳转时间</button>
+                <button class="toggle-btn" data-mode="date-to-timestamp">时间转时间戳</button>
+            </div>
+            <!-- 时间戳转时间的输入组 -->
+            <div class="input-group" id="timestamp-to-date-group">
+                <input type="text" id="timestamp" placeholder="输入时间戳">
+                <select id="timestamp-type">
+                    <option value="seconds">秒</option>
+                    <option value="milliseconds">毫秒</option>
+                </select>
+                <button onclick="convertTimestamp()">转换</button>
+            </div>
+            <!-- 时间转时间戳的输入组 -->
+            <div class="input-group" id="date-to-timestamp-group" style="display: none;">
+                <input type="datetime-local" id="date-input">
+                <select id="output-timestamp-type">
+                    <option value="seconds">转换为秒级时间戳</option>
+                    <option value="milliseconds">转换为毫秒级时间戳</option>
+                </select>
+                <button onclick="convertDateToTimestamp()">转换</button>
+            </div>
+            <div class="result" id="timestamp-result"></div>
+        </div>
+
+        <div class="converter-section">
+            <h2>时区转换</h2>
+            <div class="input-group">
+                <input type="datetime-local" id="datetime-input">
+                <select id="from-timezone">
+                    <option value="local">本地时间</option>
+                    <option value="UTC">UTC</option>
+                </select>
+                <span>转换为</span>
+                <select id="to-timezone">
+                    <option value="UTC">UTC</option>
+                    <option value="local">本地时间</option>
+                </select>
+                <button onclick="convertTimezone()">转换</button>
+            </div>
+            <div class="result" id="timezone-result"></div>
+        </div>
+
+        <div class="converter-section">
+            <h2>时间格式化</h2>
+            <div class="input-group">
+                <input type="datetime-local" id="format-input">
+                <select id="format-type">
+                    <option value="YYYY-MM-DD HH:mm:ss">YYYY-MM-DD HH:mm:ss</option>
+                    <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                    <option value="relative">相对时间</option>
+                </select>
+                <button onclick="formatTime()">格式化</button>
+            </div>
+            <div class="result" id="format-result"></div>
+        </div>
+    </div>
+    <div id="toast" class="toast"></div>
+    <script src="js/main.js"></script>
+</body>
+</html> 
