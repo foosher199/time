@@ -3,18 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>时间转换工具</title>
+    <title data-i18n="pageTitle">时间转换工具</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .lang-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .lang-btn:hover {
+            background: #f5f5f5;
+        }
+        .arrow-icon {
+            fill: currentColor;
+            transition: transform 0.2s;
+        }
+        .lang-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 4px;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: none;
+            min-width: 200px;
+        }
+        .lang-menu.show {
+            display: block;
+        }
+        .lang-option {
+            display: flex;
+            flex-direction: column;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.2s;
+        }
+        .lang-option:hover {
+            background-color: #f5f5f5;
+        }
+        .lang-option:first-child {
+            border-radius: 6px 6px 0 0;
+        }
+        .lang-option:last-child {
+            border-radius: 0 0 6px 6px;
+        }
+        .lang-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .lang-code {
+            font-size: 12px;
+            color: #666;
+        }
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background: #007AFF;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
 </head>
 <body>
+    <div class="language-switcher">
+        <button class="lang-btn" onclick="toggleLangMenu()">
+            <span data-i18n="currentLang"></span>
+            <svg class="arrow-icon" viewBox="0 0 24 24" width="16" height="16">
+                <path d="M7 10l5 5 5-5z"/>
+            </svg>
+        </button>
+        <div class="lang-menu">
+            <a href="#" onclick="switchLanguage('zh')" class="lang-option">
+                <span class="lang-name">中文</span>
+                <span class="lang-code">简体中文</span>
+            </a>
+            <a href="#" onclick="switchLanguage('en')" class="lang-option">
+                <span class="lang-name">English</span>
+                <span class="lang-code">United States</span>
+            </a>
+        </div>
+    </div>
+
     <div class="container">
-        <h1>时间转换工具</h1>
+        <h1 data-i18n="welcome"></h1>
         
         <!-- 添加当前时间显示区域 -->
         <div class="current-time-section">
             <div class="time-display">
                 <div class="time-item">
-                    <label>当前时间</label>
+                    <label data-i18n="currentTime"></label>
                     <div class="value-container">
                         <div id="current-time" class="value"></div>
                         <button class="copy-btn" onclick="copyToClipboard('current-time')">
@@ -25,7 +129,7 @@
                     </div>
                 </div>
                 <div class="time-item">
-                    <label>时间戳(秒)</label>
+                    <label data-i18n="timestampSeconds"></label>
                     <div class="value-container">
                         <div id="current-timestamp-seconds" class="value"></div>
                         <button class="copy-btn" onclick="copyToClipboard('current-timestamp-seconds')">
@@ -36,7 +140,7 @@
                     </div>
                 </div>
                 <div class="time-item">
-                    <label>时间戳(毫秒)</label>
+                    <label data-i18n="timestampMilliseconds"></label>
                     <div class="value-container">
                         <div id="current-timestamp-milliseconds" class="value"></div>
                         <button class="copy-btn" onclick="copyToClipboard('current-timestamp-milliseconds')">
@@ -50,65 +154,67 @@
         </div>
 
         <div class="converter-section">
-            <h2>时间戳转换</h2>
+            <h2 data-i18n="timestampConversion"></h2>
             <div class="conversion-toggle">
-                <button class="toggle-btn active" data-mode="timestamp-to-date">时间戳转时间</button>
-                <button class="toggle-btn" data-mode="date-to-timestamp">时间转时间戳</button>
+                <button class="toggle-btn active" data-mode="timestamp-to-date" data-i18n="timestampToDate"></button>
+                <button class="toggle-btn" data-mode="date-to-timestamp" data-i18n="dateToTimestamp"></button>
             </div>
             <!-- 时间戳转时间的输入组 -->
             <div class="input-group" id="timestamp-to-date-group">
-                <input type="text" id="timestamp" placeholder="输入时间戳">
+                <input type="text" id="timestamp" data-i18n-placeholder="inputTimestampPlaceholder">
                 <select id="timestamp-type">
-                    <option value="seconds">秒</option>
-                    <option value="milliseconds">毫秒</option>
+                    <option value="seconds" data-i18n="secondsOption"></option>
+                    <option value="milliseconds" data-i18n="millisecondsOption"></option>
                 </select>
-                <button onclick="convertTimestamp()">转换</button>
+                <button onclick="convertTimestamp()" data-i18n="convertButton"></button>
             </div>
             <!-- 时间转时间戳的输入组 -->
             <div class="input-group" id="date-to-timestamp-group" style="display: none;">
                 <input type="datetime-local" id="date-input">
                 <select id="output-timestamp-type">
-                    <option value="seconds">转换为秒级时间戳</option>
-                    <option value="milliseconds">转换为毫秒级时间戳</option>
+                    <option value="seconds" data-i18n="convertToSecondsOption"></option>
+                    <option value="milliseconds" data-i18n="convertToMillisecondsOption"></option>
                 </select>
-                <button onclick="convertDateToTimestamp()">转换</button>
+                <button onclick="convertDateToTimestamp()" data-i18n="convertButton"></button>
             </div>
             <div class="result" id="timestamp-result"></div>
         </div>
 
         <div class="converter-section">
-            <h2>时区转换</h2>
+            <h2 data-i18n="timezoneConversion"></h2>
             <div class="input-group">
                 <input type="datetime-local" id="datetime-input">
                 <select id="from-timezone">
-                    <option value="local">本地时间</option>
-                    <option value="UTC">UTC</option>
+                    <option value="local" data-i18n="localTimeOption"></option>
+                    <option value="UTC" data-i18n="utcOption"></option>
                 </select>
-                <span>转换为</span>
+                <span data-i18n="convertToText"></span>
                 <select id="to-timezone">
-                    <option value="UTC">UTC</option>
-                    <option value="local">本地时间</option>
+                    <option value="UTC" data-i18n="utcOption"></option>
+                    <option value="local" data-i18n="localTimeOption"></option>
                 </select>
-                <button onclick="convertTimezone()">转换</button>
+                <button onclick="convertTimezone()" data-i18n="convertButton"></button>
             </div>
             <div class="result" id="timezone-result"></div>
         </div>
 
         <div class="converter-section">
-            <h2>时间格式化</h2>
+            <h2 data-i18n="timeFormatting"></h2>
             <div class="input-group">
                 <input type="datetime-local" id="format-input">
                 <select id="format-type">
-                    <option value="YYYY-MM-DD HH:mm:ss">YYYY-MM-DD HH:mm:ss</option>
-                    <option value="MM/DD/YYYY">MM/DD/YYYY</option>
-                    <option value="relative">相对时间</option>
+                    <option value="YYYY-MM-DD HH:mm:ss" data-i18n="formatYMDHMS"></option>
+                    <option value="MM/DD/YYYY" data-i18n="formatMDY"></option>
+                    <option value="relative" data-i18n="formatRelative"></option>
                 </select>
-                <button onclick="formatTime()">格式化</button>
+                <button onclick="formatTime()" data-i18n="convertButton"></button>
             </div>
             <div class="result" id="format-result"></div>
         </div>
     </div>
     <div id="toast" class="toast"></div>
     <script src="js/main.js"></script>
+    <script src="js/translations.js"></script>
+    <script src="js/i18n.js"></script>
 </body>
 </html> 
